@@ -3,9 +3,9 @@ const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleRepairer = require('role.repairer');
 
-//╔════════════════════════════╗
-//>Section:   Global Variables ║
-//╚════════════════════════════╝
+//╔══════════════════╗
+//║ Global Variables ║
+//╚══════════════════╝
 const activated_harvesters = true;
 const activated_harvesters_external = false;
 const activated_harvesters_mineral = false;
@@ -53,26 +53,26 @@ const model_claimers = [];
 const model_fillers = [];
 
 module.exports.loop = function () {
-	// ╔═══════════════════╗
-	// >Section:   CodeLab ║
-	// ╚═══════════════════╝
+	// ╔═════════╗
+	// ║ CodeLab ║
+	// ╚═════════╝
 	try {
 		// put your test code here
 	} catch (error) {
 		console.log(error);
 	}
 
-	// ╔════════════════════╗
-	// >Section:   Watchers ║
-	// ╚════════════════════╝
+	// ╔══════════╗
+	// ║ Watchers ║
+	// ╚══════════╝
 	const total_harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
 	const total_builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
 	const total_upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
 	const total_repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
 
-	// ╔═══════════════════╗
-	// >Section:   Loggers ║
-	// ╚═══════════════════╝
+	// ╔═════════╗
+	// ║ Loggers ║
+	// ╚═════════╝
 	for (const name in Game.rooms) {
 		console.log(`╔════════════════════════════════════════════════`);
 		console.log(`║─┤Room "${name}"`);
@@ -85,9 +85,9 @@ module.exports.loop = function () {
 		console.log(`╚════════════════════════════════════════════════`);
 	}
 
-	// ╔══════════════════════════╗
-	// >Section:   Memory Cleaner ║
-	// ╚══════════════════════════╝
+	// ╔════════════════╗
+	// ║ Memory Cleaner ║
+	// ╚════════════════╝
 	for (const name in Memory.creeps) {
 		if (!Game.creeps[name]) {
 			console.log(`Clearing non-existing creep memory: ${name}`);
@@ -95,9 +95,9 @@ module.exports.loop = function () {
 		}
 	}
 
-	// ╔═════════════════════════════╗
-	// >Section:   Notify Spawning   ║
-	// ╚═════════════════════════════╝
+	// ╔═════════════════╗
+	// ║ Notify Spawning ║
+	// ╚═════════════════╝
 	if (Game.spawns['Spawn1'].spawning) {
 		const spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
 		const msg = `Spawning: ${spawningCreep.memory.role}`;
@@ -109,9 +109,9 @@ module.exports.loop = function () {
 		);
 	}
 
-	// ╔═════════════════════════════╗
-	// >Section:   Harvester Spawner ║
-	// ╚═════════════════════════════╝
+	// ╔═══════════════════╗
+	// ║ Harvester Spawner ║
+	// ╚═══════════════════╝
 	if (total_harvesters.length < spawn_harvester) {
 		const newName = `Harvester${Game.time}`;
 		console.log(`Spawning new harvester: ${newName}`);
@@ -120,9 +120,9 @@ module.exports.loop = function () {
 		});
 	}
 
-	// ╔═══════════════════════════╗
-	// >Section:   Builder Spawner ║
-	// ╚═══════════════════════════╝
+	// ╔═════════════════╗
+	// ║ Builder Spawner ║
+	// ╚═════════════════╝
 	if (total_builders.length < spawn_builder) {
 		const newName = `Builder${Game.time}`;
 		console.log(`Spawning new builder: ${newName}`);
@@ -131,18 +131,18 @@ module.exports.loop = function () {
 		});
 	}
 
-	// ╔════════════════════════════╗
-	// >Section:   Upgrader Spawner ║
-	// ╚════════════════════════════╝
+	// ╔══════════════════╗
+	// ║ Upgrader Spawner ║
+	// ╚══════════════════╝
 	if (total_upgraders.length < spawn_upgrader) {
 		const newName = `Upgrader${Game.time}`;
 		console.log(`Spawning new upgrader: ${newName}`);
 		Game.spawns['Spawn1'].spawnCreep(model_upgraders, newName, { memory: { role: 'upgrader' } });
 	}
 
-	// ╔═══════════════════════════╗
-	// >Section:  Repairer Spawner ║
-	// ╚═══════════════════════════╝
+	// ╔══════════════════╗
+	// ║ Repairer Spawner ║
+	// ╚══════════════════╝
 	if (total_repairers.length < spawn_repair) {
 		const newName = `Repairer${Game.time}`;
 		console.log(`Spawning new repairer: ${newName}`);
@@ -151,15 +151,15 @@ module.exports.loop = function () {
 		});
 	}
 
-	// ╔═══════════════════════════╗
-	// >Section:   Role Assignment ║
-	// ╚═══════════════════════════╝
+	// ╔═════════════════╗
+	// ║ Role Assignment ║
+	// ╚═════════════════╝
 	for (let name in Game.creeps) {
 		let creep = Game.creeps[name];
 		switch (creep.memory.role) {
-			// case 'harvester':
-			// 	roleHarvester.run(creep, activated_harvesters);
-			// 	break;
+      case 'harvester':
+				roleHarvester.run(creep, activated_harvesters);
+				break;
 			// case 'harvester_external':
 			// 	roleHarvesterExternal.run(creep, activated_harvesters);
 			// 	break;
@@ -193,10 +193,9 @@ module.exports.loop = function () {
 		}
 	}
 
-	// ╔════════════════════════════════════════════════╗
-	// >Section:   Tower
-	// @desc     Tower Management
-	// ╚════════════════════════════════════════════════╝
+	// ╔══════════════════╗
+	// ║ Tower Management ║
+	// ╚══════════════════╝
 	// var tower = Game.getObjectById('TOWER_ID');
 	// if (tower) {
 	// 	var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
